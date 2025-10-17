@@ -1,5 +1,6 @@
 import uuid
-from sqlalchemy import Column, String, Text, ForeignKey, Numeric, JSON
+from sqlalchemy import Column, String, Text, ForeignKey, Numeric, JSON, DateTime
+from datetime import datetime
 from sqlalchemy.dialects.postgresql import UUID
 from app.core.db import Base
 
@@ -33,3 +34,10 @@ class BotConfig(Base):
     placement_multipliers = Column(JSON, default={})
     color_multiplier = Column(JSON, default={"Color":1.15,"Black & grey":1.0})
     disclaimer = Column(Text, default="Final quote after in-person sizing and stencil review.")
+
+class ConversationState(Base):
+    __tablename__ = "conversation_state"
+    tenant_id = Column(String, primary_key=True)
+    user_id = Column(String, primary_key=True)   # PSID
+    data = Column(JSON, default={})
+    updated_at = Column(DateTime, default=datetime.now)
