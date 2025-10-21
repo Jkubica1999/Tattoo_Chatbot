@@ -1,5 +1,9 @@
+from app.core.size import to_area_cm2
 from app.core.nlu import parse_message
-from app.core.estimator import estimate
+from app.core.estimator import estimate, estimate_from_area
+from app.core.pricing import resolve_pricing
+from app.models import Artist
+from sqlalchemy.orm import Session
 from datetime import datetime
 
 REQUIRED_SLOTS = ["style", "placement", "color", "size_band"]
@@ -92,6 +96,16 @@ def to_meta_send(tenant_id: str, psid: str, text: str):
         requests.post(url, json=payload, timeout=10)
     except Exception:
         pass
+
+def find_artist_by_name(db: Session, tenant_id: str, name_like: str | None):
+    if not name_like:
+        return None
+    name = name_like.strip().lower()
+    q = db.query(Artist).filter(Artist.tenant_id == tenant_id, Artist.active == True)
+    for a in q.all():
+        if name in (a.name or "").lower():
+            return a
+    return None
 
 def get_page_token(tenant_id: str) -> str:
     # TODO: fetch per-tenant page token from DB/secret store

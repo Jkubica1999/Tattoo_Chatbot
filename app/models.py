@@ -25,6 +25,8 @@ class Tenant(Base):
 
     id: Mapped[uuid.UUID] = mapped_column(PG_UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
     name: Mapped[str] = mapped_column(String, nullable=False)
+    address: Mapped[str] = mapped_column(String, nullable=True)
+    opening_hours: Mapped[str] = mapped_column(Text, nullable=True)
     status: Mapped[str] = mapped_column(String, default="trial")  # trial|active|past_due|canceled
     timezone: Mapped[str] = mapped_column(String, default="Europe/Dublin")
     stripe_customer_id: Mapped[str | None] = mapped_column(String, nullable=True)
