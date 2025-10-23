@@ -2,9 +2,10 @@ from app.core.size import to_area_cm2
 from app.core.nlu import parse_message
 from app.core.estimator import estimate, estimate_from_area
 from app.core.pricing import resolve_pricing
+from app.core.tenants import load_tenant
 from app.models import Artist
 from sqlalchemy.orm import Session
-from datetime import datetime
+
 
 REQUIRED_SLOTS = ["style", "placement", "color", "size_band"]
 
